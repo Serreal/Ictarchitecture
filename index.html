@@ -1,0 +1,179 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <title>GIF Maker</title>
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/css/bootstrap.min.css" integrity="sha384-Gn5384xqQ1aoWXA+058RXPxPg6fy4IWvTNh0E263XmFcJlSAwiGgFAW/dAiS6JXm" crossorigin="anonymous">
+    <style>
+        img {
+            max-width: 200px;
+            max-height: 200px;
+            width: auto;
+            height: auto;
+        }
+    </style>
+</head>
+
+<body>
+    <nav class="navbar navbar-expand-lg navbar-dark bg-dark">
+        <a class="navbar-brand" href="./index.html">Groep 4</a>
+        <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
+          <span class="navbar-toggler-icon"></span>
+        </button>
+
+        <div class="collapse navbar-collapse" id="navbarSupportedContent">
+            <ul class="navbar-nav mr-auto">
+                <li class="nav-item active">
+                    <a class="nav-link" href="./index.html">Home <span class="sr-only">(current)</span></a>
+                </li>
+            </ul>
+        </div>
+    </nav>
+    <div>
+        <h1>GIF Transformer</h1>
+        <h2>WORK IN PROGRESS</h2>
+        <div>
+            <form autocomplete="off" id="form">
+                <p>
+                    <label>Select Images:</label>
+                    <input type="file" id="images" multiple>
+                </p>
+                <p>
+                    <label>E-mail: </label>
+                    <input type="email">
+                    <label>API KEY: </label>
+                    <input type="url">
+                </p>
+                <p>
+                    <input type="submit" value="Upload Images and create a GIF"></input>
+                </p>
+                <button onclick="location.reload()">Cancel</button>
+                <p>
+                    <output id="result"></output>
+                </p>
+            </form>
+        </div>
+    </div>
+    <div class="slideshow-container" id="result"></div>
+</body>
+
+<script src="https://code.jquery.com/jquery-3.2.1.slim.min.js" integrity="sha384-KJ3o2DKtIkvYIK3UENzmM7KCkRr/rE9/Qpg6aAZGJwFDMVNA/GpGFF93hXpG5KkN" crossorigin="anonymous"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.12.9/umd/popper.min.js" integrity="sha384-ApNbgh9B+Y1QKtv3Rn7W3mgPxhU9K/ScQsAP7hUibX39j7fakFPskvXusvfa0b4Q" crossorigin="anonymous"></script>
+<script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/js/bootstrap.min.js" integrity="sha384-JZR6Spejh4U02d8jOt6vLEHfe/JQGiRRSQQxSfFWpi1MquVdAyjUar5+76PVCmYl" crossorigin="anonymous"></script>
+<script src="https://unpkg.com/axios/dist/axios.min.js"></script>
+<script>
+    document.querySelector("#images").addEventListener("change", function() {
+        const MAX_SIZE = 1000000;
+        var output = document.getElementById("result");
+        output.innerHTML = "";
+
+        for (var i = 0; i < this.files.length; i++) {
+            var file = this.files[i];
+            const reader = new FileReader();
+
+            reader.addEventListener("load", () => {
+                var div = document.createElement("div");
+                div.classList.add('gif');
+                if (reader.result.length < MAX_SIZE) {
+                    div.innerHTML = "<img src='" + reader.result + "'/>"
+                    output.insertBefore(div, null);
+                } else {
+                    alert("File size is too large")
+                }
+            });
+            reader.readAsDataURL(file);
+        }
+    });
+    document.querySelector("#form").addEventListener("submit", function(e) {
+        e.preventDefault();
+        const API_PRESIGNEDURL = "https://5txurxhuy2.execute-api.us-east-1.amazonaws.com/default/getPresignedURL";
+        const API_GIFMAKER = "https://msw31oj97f.execute-api.eu-west-1.amazonaws.com/Prod/generate/gif"
+
+        const data = document.querySelector("#images");
+        for (var i = 0; i < data.files.length; i++) {
+            var file = data.files[i];
+            const reader = new FileReader();
+            var uploadURL;
+
+            //Get mode voor image url
+            reader.addEventListener("load", () => {
+                const response = fetch(API_PRESIGNEDURL, {
+                        method: 'GET',
+                        "Access-Control-Allow-Methods": "*",
+                    })
+                    .then(result => result.json())
+                    .then((output) => {
+                        console.log('OUTPUT: ', output.uploadURL)
+                        uploadURL = output.uploadURL;
+                        xhr();
+                    })
+
+                console.log(response)
+                console.log(reader.result);
+                let binary = atob(reader.result.split(',')[1])
+                let array = []
+                for (var i = 0; i < binary.length; i++) {
+                    array.push(binary.charCodeAt(i))
+                }
+                let blobData = new Blob([new Uint8Array(array)], {
+                    type: 'image'
+                })
+
+                console.log(blobData)
+
+                function xhr() {
+                    const xhr = new XMLHttpRequest();
+                    xhr.onload = () => {
+                        console.log(xhr.responseText)
+                    }
+                    console.log(uploadURL);
+                    xhr.open('PUT', uploadURL);
+                    xhr.setRequestHeader("Access-Control-Allow-Methods", "*")
+                    xhr.send(blobData);
+                }
+
+            });
+            reader.readAsDataURL(file);
+        }
+    });
+
+    /*const imageData = {
+            "inputImageUrls": [
+                "https://i.pinimg.com/originals/a4/f8/f9/a4f8f91b31d2c63a015ed34ae8c13bbd.jpg",
+                "https://i.pinimg.com/originals/20/79/03/2079033abc8314be554f9d24f562a199.jpg"
+            ],
+            "outputImageUrl": "http://requestbin.net/r/5834c6lz"
+        }
+        fetch(API_GIFMAKER, {
+            method: 'POST',
+            headers: {
+                'x-api-key': 'SIdHi3lzwma61h4GeBGR96ZD4rpsa3mb6iKVlMG7',
+                'Content-Type': 'application/json',
+                'Accept': ''
+            },
+            body: JSON.stringify(imageData)
+        })
+    });*/
+</script>
+<script>
+    function createscuffedgif(value) {
+        var slideIndex = 0;
+        showSlides();
+
+        function showSlides() {
+            var i;
+            var slides = document.getElementsByClassName("gif");
+            for (i = 0; i < slides.length; i++) {
+                slides[i].style.display = "none";
+            }
+            slideIndex++;
+            if (slideIndex > slides.length) {
+                slideIndex = 1
+            }
+            slides[slideIndex - 1].style.display = "block";
+            setTimeout(showSlides, 100);
+        };
+    };
+</script>
+
+</html>
