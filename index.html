@@ -42,7 +42,7 @@
                     <label>E-mail: </label>
                     <input type="email">
                     <label>API KEY: </label>
-                    <input type="url">
+                    <input type="text" id="apiKey">
                 </p>
                 <p>
                     <input type="submit" value="Upload Images and create a GIF"></input>
@@ -86,7 +86,7 @@
     });
     document.querySelector("#form").addEventListener("submit", function(e) {
         e.preventDefault();
-        const API_PRESIGNEDURL = "https://5txurxhuy2.execute-api.us-east-1.amazonaws.com/default/getPresignedURL";
+        const API_PRESIGNEDURL = "https://tmgujo0ne5.execute-api.us-east-1.amazonaws.com/default/getPresignedURL";
         const API_GIFMAKER = "https://msw31oj97f.execute-api.eu-west-1.amazonaws.com/Prod/generate/gif"
 
         const data = document.querySelector("#images");
@@ -99,7 +99,8 @@
             reader.addEventListener("load", () => {
                 const response = fetch(API_PRESIGNEDURL, {
                         method: 'GET',
-                        "Access-Control-Allow-Methods": "*",
+                        //"Access-Control-Allow-Methods": "*",
+                        headers: {'X-Api-Key' : '2COa5T2HjBk0SEtdUPmVa9s0GLpVTMF2T5R3Rpt4'},
                     })
                     .then(result => result.json())
                     .then((output) => {
