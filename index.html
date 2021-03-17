@@ -40,7 +40,7 @@
                 </p>
                 <p>
                     <label>E-mail: </label>
-                    <input type="email">
+                    <input type="text" id="email">
                     <label>API KEY: </label>
                     <input type="text" id="apiKey">
                 </p>
@@ -100,6 +100,7 @@
         const API_PRESIGNEDURL = "https://tmgujo0ne5.execute-api.us-east-1.amazonaws.com/default/getPresignedURL"; //API URL for the presignedurl
         const API_GIFMAKER = "https://msw31oj97f.execute-api.eu-west-1.amazonaws.com/Prod/generate/gif" //API URL for the generate gif api
         let inputApiKey = document.getElementById("apiKey").value; //API key that validates if the user may access the API
+        let email = document.getElementById("email").value;
 
         const data = document.querySelector("#images"); //Loads in all the uploaded files
 
@@ -122,7 +123,8 @@
                 const response = fetch(API_PRESIGNEDURL, {
                         method: 'GET',
                         headers: {
-                            'X-Api-Key': inputApiKey
+                            'X-Api-Key': inputApiKey,
+                            'metadata' : email
                         },
                     })
                     .then(result => result.json())
