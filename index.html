@@ -100,7 +100,7 @@
         const API_PRESIGNEDURL = "https://tmgujo0ne5.execute-api.us-east-1.amazonaws.com/default/getPresignedURL"; //API URL for the presignedurl
         const API_GIFMAKER = "https://msw31oj97f.execute-api.eu-west-1.amazonaws.com/Prod/generate/gif" //API URL for the generate gif api
         let inputApiKey = document.getElementById("apiKey").value; //API key that validates if the user may access the API
-        let email = document.getElementById("email").value;
+        let email = document.getElementById("email").value; // Email where the GIFURL will be send to
 
         const data = document.querySelector("#images"); //Loads in all the uploaded files
 
@@ -120,6 +120,7 @@
             reader.addEventListener("load", () => {
 
                 //API GET with the APIKEY as header to request access upon successful completion it will trigger the xhr() funtion
+                // Header 'metadata' which contains the email. Now the uploaded image has metadata which is the email.
                 const response = fetch(API_PRESIGNEDURL, {
                         method: 'GET',
                         headers: {
