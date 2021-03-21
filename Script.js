@@ -28,34 +28,36 @@
 
    //Function to show a gif preview on the webpage using a presigned previewURL
    function previewGIF(previewURL) {
-       clearOutput(); //clears the entire form
+       setTimeout(() => {
+           clearOutput(); //clears the entire form
 
-       var alertbox = document.getElementById("alertbox");
-       var output = document.getElementById("result");
-       output.innerHTML = ""; //makes sure the output field is empty from other images
+           var alertbox = document.getElementById("alertbox");
+           var output = document.getElementById("result");
+           output.innerHTML = ""; //makes sure the output field is empty from other images
 
-       //Creates a div element that has the gif attached as image and shows this on the webpage
-       var div = document.createElement("div");
-       div.innerHTML = "<img src='" + previewURL + "' id='preview'/>"
-       output.append(div);
+           //Creates a div element that has the gif attached as image and shows this on the webpage
+           var div = document.createElement("div");
+           div.innerHTML = "<img src='" + previewURL + "' id='preview'/>"
+           output.append(div);
 
-       //In case the gif failed to load it will create an alert and retry in 60 seconds (will only be done once to avoid recursion)
-       document.getElementById("preview").onerror = () => {
-           var alert = document.createElement("div");
-           alert.className = "alert alert-warning alert-dismissible fade show";
-           alert.setAttribute("role", "alert");
-           alert.setAttribute("id", "alertPreview");
-           alert.setAttribute("style", "display: none;");
-           alert.innerHTML = '<strong>GIF preview failed to load:</strong> Please wait for the preview to load. (~60 seconds)';
-           alertbox.append(alert);
-           showFunction("alertPreview");
+           //In case the gif failed to load it will create an alert and retry in 60 seconds (will only be done once to avoid recursion)
+           document.getElementById("preview").onerror = () => {
+               var alert = document.createElement("div");
+               alert.className = "alert alert-warning alert-dismissible fade show";
+               alert.setAttribute("role", "alert");
+               alert.setAttribute("id", "alertPreview");
+               alert.setAttribute("style", "display: none;");
+               alert.innerHTML = '<strong>GIF preview failed to load:</strong> Please wait for the preview to load. (~60 seconds)';
+               alertbox.append(alert);
+               showFunction("alertPreview");
 
-           setTimeout(() => {
-               output.innerHTML = "";
-               div.innerHTML = "<img src='" + previewURL + "' id='preview'/>"
-               output.append(div);
-           }, 60000);
-       }
+               setTimeout(() => {
+                   output.innerHTML = "";
+                   div.innerHTML = "<img src='" + previewURL + "' id='preview'/>"
+                   output.append(div);
+               }, 30000);
+           }
+       }, 30000);
    }
 
    //Function to show an alert automatically

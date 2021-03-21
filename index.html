@@ -5,23 +5,30 @@
     <title>GIF Maker</title>
     <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/css/bootstrap.min.css" integrity="sha384-Gn5384xqQ1aoWXA+058RXPxPg6fy4IWvTNh0E263XmFcJlSAwiGgFAW/dAiS6JXm" crossorigin="anonymous">
     <style>
+        .container {
+            margin-top: 20px;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+        }
+        
+        output {
+            padding-left: 150px;
+            text-align: center;
+            align-items: center;
+        }
+        
         img {
             max-width: 200px;
             max-height: 200px;
             width: auto;
             height: auto;
+            margin-bottom: 5px;
         }
         
         input {
+            display: flex;
             width: 500px;
-        }
-        
-        label {
-            text-align: end;
-        }
-        
-        output {
-            pointer-events: none;
         }
     </style>
 </head>
@@ -46,30 +53,28 @@
             <strong>GIF created:</strong> You will soon see the gif apear at the bottom of the page. An email with the gif has also been send!
         </div>
     </div>
-    <div>
-        <h1>Groep 4 - GIF Transformer</h1>
-        <div>
-            <form autocomplete="off" id="form">
-                <p>
-                    <label>Select Images:</label>
-                    <input type="file" id="images" accept="image/*" multiple>
-                </p>
-                <p>
-                    <label>E-mail: </label>
-                    <input type="email" id="email">
-                </p>
-                <p>
-                    <label>API KEY: </label>
-                    <input type="text" id="apiKey">
-                </p>
-                <p>
-                    <input type="submit" value="Upload Images and create a GIF"></input>
-                </p>
-                <p>
-                    <output id="result"></output>
-                </p>
-            </form>
-        </div>
+    <div class="container">
+        <form autocomplete="off" id="form">
+            <h1>Groep 4 - GIF Transformer</h1>
+            <p>
+                <label>Select Images:</label>
+                <input type="file" id="images" accept="image/*" multiple>
+            </p>
+            <p>
+                <label>E-mail: </label>
+                <input type="email" id="email">
+            </p>
+            <p>
+                <label>API KEY: </label>
+                <input type="text" id="apiKey">
+            </p>
+            <p>
+                <input type="submit" value="Upload Images and create a GIF"></input>
+            </p>
+            <p>
+                <output id="result"></output>
+            </p>
+        </form>
     </div>
 </body>
 
