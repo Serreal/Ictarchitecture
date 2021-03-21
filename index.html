@@ -11,6 +11,18 @@
             width: auto;
             height: auto;
         }
+        
+        input {
+            width: 500px;
+        }
+        
+        label {
+            text-align: end;
+        }
+        
+        output {
+            pointer-events: none;
+        }
     </style>
 </head>
 
@@ -29,37 +41,41 @@
             </ul>
         </div>
     </nav>
+    <div id="alertbox">
+        <div class="alert alert-warning alert-dismissible fade show" id="alert" role="alert" style="display: none;">
+            <strong>GIF created:</strong> You will soon see the gif apear at the bottom of the page. An email with the gif has also been send!
+        </div>
+    </div>
     <div>
-        <h1>GIF Transformer</h1>
-        <h2>WORK IN PROGRESS</h2>
+        <h1>Groep 4 - GIF Transformer</h1>
         <div>
             <form autocomplete="off" id="form">
                 <p>
                     <label>Select Images:</label>
-                    <input type="file" id="images" multiple>
+                    <input type="file" id="images" accept="image/*" multiple>
                 </p>
                 <p>
                     <label>E-mail: </label>
                     <input type="email" id="email">
+                </p>
+                <p>
                     <label>API KEY: </label>
                     <input type="text" id="apiKey">
                 </p>
                 <p>
                     <input type="submit" value="Upload Images and create a GIF"></input>
                 </p>
-                <button onclick="location.reload()">Cancel</button>
                 <p>
                     <output id="result"></output>
                 </p>
             </form>
         </div>
     </div>
-    <div class="slideshow-container" id="result"></div>
 </body>
 
 <script src="https://code.jquery.com/jquery-3.2.1.slim.min.js" integrity="sha384-KJ3o2DKtIkvYIK3UENzmM7KCkRr/rE9/Qpg6aAZGJwFDMVNA/GpGFF93hXpG5KkN" crossorigin="anonymous"></script>
 <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.12.9/umd/popper.min.js" integrity="sha384-ApNbgh9B+Y1QKtv3Rn7W3mgPxhU9K/ScQsAP7hUibX39j7fakFPskvXusvfa0b4Q" crossorigin="anonymous"></script>
 <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/js/bootstrap.min.js" integrity="sha384-JZR6Spejh4U02d8jOt6vLEHfe/JQGiRRSQQxSfFWpi1MquVdAyjUar5+76PVCmYl" crossorigin="anonymous"></script>
-<script src="./Script.js"></script>
+<script src="./gifmaker.js"></script>
 
 </html>
